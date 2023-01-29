@@ -10,9 +10,9 @@ import SnapKit
 class MainViewController: UIViewController {
     let logoImageView = UIImageView()
     let logoImage = UIImage(named: "logo")
-    var floatInputBox = FloatTextField(placeholder: "포켓몬 이름이나 번호, 타입 등을 입력하세요.")
+    var floatInputBox = FloatTextField()
     let inputBox = UITextField(frame: .zero)
-    
+    let searchButton = UIButton(type: .custom)
     
     let tabBar = UITabBar(frame: .zero)
     
@@ -21,8 +21,9 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         print("INIT!")
         view.backgroundColor = .systemBackground
+        floatInputBox.initiate(placeholder: "포켓몬 이름이나 번호, 타입 등을 입력하세요.")
         drawUI()
-        drawTabBar()
+        addEventListener()
         
     }
     
@@ -41,40 +42,22 @@ class MainViewController: UIViewController {
             make.centerY.equalTo(view.snp.centerY).priority(.low)
         }
         
-        floatInputBox.textfield.borderStyle = .none
-        floatInputBox.textfield.layer.borderColor = UIColor.systemGray5.cgColor
-        floatInputBox.textfield.layer.borderWidth = CGFloat(3)
-        floatInputBox.textfield.font = UIFont(name: (inputBox.font?.fontName)!, size: CGFloat(17))
-        floatInputBox.textfield.layer.cornerRadius = 5
-        floatInputBox.textfield.addLeftPadding()
+      
+        floatInputBox.textfield!.borderStyle = .none
+        floatInputBox.textfield!.layer.borderColor = UIColor.systemGray5.cgColor
+        floatInputBox.textfield!.layer.borderWidth = CGFloat(3)
+        floatInputBox.textfield!.font = UIFont(name: (inputBox.font?.fontName)!, size: CGFloat(17))
+        floatInputBox.textfield!.layer.cornerRadius = 5
+        floatInputBox.textfield!.addLeftPadding()
         
-        view.addSubview(floatInputBox.container)
-        floatInputBox.container.snp.makeConstraints { make in
+        view.addSubview(floatInputBox.container!)
+        floatInputBox.container!.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.centerY.equalTo(view.snp.centerY)
             make.leading.equalTo(view.snp.leading).offset(20)
             make.trailing.equalTo(view.snp.trailing).offset(-20)
             make.height.equalTo(100)
         }
-        
-//        inputBox.borderStyle = .none
-//        inputBox.layer.borderColor = UIColor.systemGray5.cgColor
-//        inputBox.layer.borderWidth = CGFloat(3)
-//        inputBox.font = UIFont(name: (inputBox.font?.fontName)!, size: CGFloat(17))
-//        inputBox.layer.cornerRadius = 5
-//        inputBox.addLeftPadding()
-//        inputBox.isHidden = true
-//        inputBox.placeholder = "포켓몬 이름이나, 번호, 타입 등을 입력하세요."
-        
-//        view.addSubview(inputBox)
-//        //        inputBox.isHidden = true
-//        inputBox.snp.makeConstraints { make in
-//            make.centerX.equalTo(view.snp.centerX)
-//            make.centerY.equalTo(view.snp.centerY)
-//            make.leading.equalTo(view.snp.leading).offset(20)
-//            make.trailing.equalTo(view.snp.trailing).offset(-20)
-//            make.height.equalTo(70)
-//        }
         
         UIView.animate(withDuration: 8.0, delay: 4.0, options: [.transitionCrossDissolve]) { [weak self] in
             self!.logoImageView.snp.makeConstraints { make in
@@ -86,41 +69,50 @@ class MainViewController: UIViewController {
             self!.loadViewIfNeeded()
         }
         
-    }
-    
-    func drawTabBar () {
-        
-        let homeImage = UIImage(systemName: "house.fill", withConfiguration: UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .body, compatibleWith: .current), scale: .large))
-        let favImage = UIImage(systemName: "heart.fill", withConfiguration: UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .body, compatibleWith: .current), scale: .large))
-//        homeImage?.configuration = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .body, compatibleWith: .current), scale: .large)
-        let home = UITabBarItem(title: "Home", image: homeImage, tag: 0)
-        let fav = UITabBarItem(title: "Favorite", image: favImage, tag: 1)
+        searchButton.layer.masksToBounds = false
+        searchButton.clipsToBounds = true
         
         
+        searchButton.backgroundColor = UIColor(named: "AccentColor")
+        let buttonImage = UIImageView()
         
-        
-        tabBar.setItems([home, fav], animated: true)
-        view.addSubview(tabBar)
-        tabBar.snp.makeConstraints { make in
-            make.leading.equalTo(view.snp.leading)
-            make.trailing.equalTo(view.snp.trailing)
-            make.bottom.equalTo(view.snp.bottom)
-            make.height.equalTo(50)
+        buttonImage.image = UIImage(systemName: "magnifyingglass")
+        buttonImage.tintColor = .white
+        searchButton.addSubview(buttonImage)
+        buttonImage.snp.makeConstraints { make in
+            make.centerX.equalTo(searchButton.snp.centerX)
+            make.centerY.equalTo(searchButton.snp.centerY)
+            make.size.equalTo(searchButton.snp.size).multipliedBy(0.5)
         }
+        view.addSubview(searchButton)
+        searchButton.snp.makeConstraints { make in
+            make.centerX.equalTo(view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY).multipliedBy(1.5)
+            make.width.equalTo(60)
+            make.height.equalTo(60)
+        }
+        searchButton.layer.cornerRadius = 30
+    }
+
+    func addEventListener () {
+        searchButton.addTarget(self, action: #selector(search), for: .touchUpInside)
     }
     
-//    @objc func touchInput(sender: UITextField){
-//        sender.layer.borderColor =  UIColor.systemRed.cgColor
-//        print(sender)
-//        let placeHolderLabel = sender.subviews.first(where: { NSStringFromClass(type(of: $0)) == "UITextFieldLabel" })
-//
-//        UIView.animate(withDuration: 1.0) {
-//            // Animate place holder properties here
-//            placeHolderLabel?.transform = CGAffineTransform(translationX: 100, y: 0)
-//        }
-//    }
+    @objc func search() {
+        guard let searchText = floatInputBox.textfield!.text else {return}
+        floatInputBox.textfield!.endEditing(true)
+        print(searchText)
+    }
+    
 
+}
 
+extension MainViewController: FloatTextFieldDelegate {
+    func textFieldPressReturn() {
+        self.search()
+    }
+    
+    
 }
 
 

@@ -1,5 +1,5 @@
 //
-//  NavigationViewController.swift
+//  ListViewController.swift
 //  pokeDex_clone
 //
 //  Created by Sang Hyeon kim on 2023/01/29.
@@ -7,10 +7,12 @@
 
 import UIKit
 
-class NavigationViewController: UINavigationController {
+class ListViewController: UIViewController {
+    var isFavorite: Bool?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
 
         // Do any additional setup after loading the view.
     }
