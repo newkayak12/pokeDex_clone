@@ -10,7 +10,7 @@ import SnapKit
 class MainViewController: UIViewController {
     let logoImageView = UIImageView()
     let logoImage = UIImage(named: "logo")
-    
+    var floatInputBox = FloatTextField(placeholder: "포켓몬 이름이나 번호, 타입 등을 입력하세요.")
     let inputBox = UITextField(frame: .zero)
     
     
@@ -41,30 +41,42 @@ class MainViewController: UIViewController {
             make.centerY.equalTo(view.snp.centerY).priority(.low)
         }
         
+        floatInputBox.textfield.borderStyle = .none
+        floatInputBox.textfield.layer.borderColor = UIColor.systemGray5.cgColor
+        floatInputBox.textfield.layer.borderWidth = CGFloat(3)
+        floatInputBox.textfield.font = UIFont(name: (inputBox.font?.fontName)!, size: CGFloat(17))
+        floatInputBox.textfield.layer.cornerRadius = 5
+        floatInputBox.textfield.addLeftPadding()
         
-        inputBox.addTarget(self, action: #selector(touchInput), for: .editingDidBegin)
-        inputBox.borderStyle = .none
-        inputBox.layer.borderColor = UIColor.systemGray5.cgColor
-        inputBox.layer.borderWidth = CGFloat(3)
-        inputBox.font = UIFont(name: (inputBox.font?.fontName)!, size: CGFloat(30))
-        inputBox.layer.cornerRadius = 5
-        inputBox.addLeftPadding()
-        inputBox.isHidden = true
-        
-        let inputBoxView = UIView(frame: .zero)
-        
-        
-        view.addSubview(inputBox)
-        //        inputBox.isHidden = true
-        inputBox.snp.makeConstraints { make in
+        view.addSubview(floatInputBox.container)
+        floatInputBox.container.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.centerY.equalTo(view.snp.centerY)
-            make.leading.equalTo(view.snp.leading).offset(40)
-            make.trailing.equalTo(view.snp.trailing).offset(-40)
-            make.height.equalTo(70)
+            make.leading.equalTo(view.snp.leading).offset(20)
+            make.trailing.equalTo(view.snp.trailing).offset(-20)
+            make.height.equalTo(100)
         }
         
-        UIView.animate(withDuration: 8, delay: 5, options: [.transitionCrossDissolve]) { [weak self] in
+//        inputBox.borderStyle = .none
+//        inputBox.layer.borderColor = UIColor.systemGray5.cgColor
+//        inputBox.layer.borderWidth = CGFloat(3)
+//        inputBox.font = UIFont(name: (inputBox.font?.fontName)!, size: CGFloat(17))
+//        inputBox.layer.cornerRadius = 5
+//        inputBox.addLeftPadding()
+//        inputBox.isHidden = true
+//        inputBox.placeholder = "포켓몬 이름이나, 번호, 타입 등을 입력하세요."
+        
+//        view.addSubview(inputBox)
+//        //        inputBox.isHidden = true
+//        inputBox.snp.makeConstraints { make in
+//            make.centerX.equalTo(view.snp.centerX)
+//            make.centerY.equalTo(view.snp.centerY)
+//            make.leading.equalTo(view.snp.leading).offset(20)
+//            make.trailing.equalTo(view.snp.trailing).offset(-20)
+//            make.height.equalTo(70)
+//        }
+        
+        UIView.animate(withDuration: 8.0, delay: 4.0, options: [.transitionCrossDissolve]) { [weak self] in
             self!.logoImageView.snp.makeConstraints { make in
                 make.size.width.equalTo(imgWid * 0.8).priority(.high)
                 make.size.height.equalTo(imgHei * 0.8).priority(.high)
@@ -97,10 +109,19 @@ class MainViewController: UIViewController {
         }
     }
     
-    @objc func touchInput(sender: UITextField){
-        sender.layer.borderColor =  UIColor.systemRed.cgColor
-        
-    }
+//    @objc func touchInput(sender: UITextField){
+//        sender.layer.borderColor =  UIColor.systemRed.cgColor
+//        print(sender)
+//        let placeHolderLabel = sender.subviews.first(where: { NSStringFromClass(type(of: $0)) == "UITextFieldLabel" })
+//
+//        UIView.animate(withDuration: 1.0) {
+//            // Animate place holder properties here
+//            placeHolderLabel?.transform = CGAffineTransform(translationX: 100, y: 0)
+//        }
+//    }
 
 
 }
+
+
+
