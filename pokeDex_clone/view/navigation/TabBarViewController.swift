@@ -18,7 +18,7 @@ class TabBarViewController: UITabBarController {
         main.tabBarItem.title = "Home"
         main.tabBarItem.image = homeImage
         
-        let fav = FavoriteViewController()
+        let fav = NavigationViewController(rootViewController: FavoriteViewController())
         fav.tabBarItem.title = "Favorite"
         fav.tabBarItem.image = favImage
         viewControllers = [main, fav]
