@@ -11,18 +11,22 @@ class TypeEntity: Codable {
     var pokeNo: Int?;
     var background: String?;
     var fontColor: String?;
-    var typeName: String?;
+    var type: String?;
     
     
-
+    func println() {
+        print("\(no), \(pokeNo), \(background), \(fontColor), \(type)")
+    }
+    
+    
     func getInsertQuery() -> String {
         
         guard let _no = no else {fatalError()}
         guard let _pokeNo = pokeNo else {fatalError()}
         guard let _background = background else {fatalError()}
         guard let _fontColor = fontColor else {fatalError()}
-        if let _typeName = typeName  {
-            return "INSERT INTO Type ( pokeNo, background, fontColor, typeName) Values ( \(_no), \(_pokeNo), '\(_background)', '\(_fontColor)', '\(_typeName)')"
+        if let _typeName = type  {
+            return "INSERT INTO Type (no, pokeNo, background, fontColor, typeName) Values ( \(_no), \(_pokeNo), '\(_background)', '\(_fontColor)', '\(_typeName)')"
         }
         
         return "INSERT INTO Type (no, pokeNo, background, fontColor) Values ( \(_no), \(_pokeNo), '\(_background)', '\(_fontColor)')"

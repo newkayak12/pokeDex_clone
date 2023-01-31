@@ -10,6 +10,10 @@ class TypeImageEntity: Codable {
     var type: String?;
     var imgSrc: String?;
     
+    func println() {
+        print("\(type), \(imgSrc)")
+    }
+    
     func getInsertQuery() -> String {
         guard let _type = type else {fatalError()}
         guard let _imgSrc = imgSrc  else {fatalError()}

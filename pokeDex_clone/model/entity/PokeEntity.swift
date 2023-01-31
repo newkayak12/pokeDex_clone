@@ -20,6 +20,10 @@ class PokeEntity: Codable {
     var des: String?;
     var like: Bool? = false
     
+    func println() {
+        print("\(no), \(pokeNo), \(pokeName), \(imgSrc), \(weight), \(height), \(classify), \(attribute), \(des), \(like)")
+    }
+    
     
     func getInsertQuery () -> String {
         let _no = no ?? -1
@@ -39,6 +43,14 @@ class PokeEntity: Codable {
         
         
         return "UPDATE Poke SET weight = '\(_weight)', height = '\(_height)', classify = '\(_classify)', attribute = '\(_attribute)', des = '\(_des)' WHERE no == \(_no)"
+    }
+    
+    func getSelectWhereFavorite () -> String {
+        return "SELECT * FROM Poke WHERE Poke.like == true"
+    }
+    
+    func getSelectAll() -> String {
+        return "SELECT * FROM Poke"
     }
 }
 

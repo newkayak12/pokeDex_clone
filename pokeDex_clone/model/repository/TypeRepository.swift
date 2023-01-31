@@ -41,6 +41,7 @@ class TypeRepository {
         
         
         let INSERT_QUERY_TEXT : String = type.getInsertQuery();
+//        print(INSERT_QUERY_TEXT)
         
         if sqlite3_prepare(db, INSERT_QUERY_TEXT, -1, &stmt, nil) != SQLITE_OK {
             let errMsg = String(cString: sqlite3_errmsg(db)!)
@@ -54,6 +55,7 @@ class TypeRepository {
         if sqlite3_step(stmt) != SQLITE_DONE {
             let errMsg = String(cString : sqlite3_errmsg(db)!)
             print("insert fail :: \(errMsg)")
+            insert(type: type)
             return
         }
         

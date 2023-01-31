@@ -21,6 +21,7 @@ class TabBarViewController: UITabBarController {
         let fav = NavigationViewController(rootViewController: FavoriteViewController())
         fav.tabBarItem.title = "Favorite"
         fav.tabBarItem.image = favImage
+        fav.navigationBar.overrideUserInterfaceStyle = .dark
         viewControllers = [main, fav]
         tabBar.backgroundColor = .systemGroupedBackground
     }

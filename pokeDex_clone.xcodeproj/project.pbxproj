@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E049F1229893C6B006E5B07 /* FavoriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E049F1129893C6B006E5B07 /* FavoriteViewModel.swift */; };
 		7E65104B29815C1E00854B29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E65104A29815C1E00854B29 /* AppDelegate.swift */; };
 		7E65104F29815C1E00854B29 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E65104E29815C1E00854B29 /* MainViewController.swift */; };
 		7E65105429815C1F00854B29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E65105329815C1F00854B29 /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E049F1129893C6B006E5B07 /* FavoriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewModel.swift; sourceTree = "<group>"; };
 		7E65104729815C1E00854B29 /* pokeDex_clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pokeDex_clone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E65104A29815C1E00854B29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7E65104E29815C1E00854B29 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +78,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E049F1029893C5C006E5B07 /* favorite */ = {
+			isa = PBXGroup;
+			children = (
+				7E049F1129893C6B006E5B07 /* FavoriteViewModel.swift */,
+			);
+			path = favorite;
+			sourceTree = "<group>";
+		};
 		7E65103E29815C1E00854B29 = {
 			isa = PBXGroup;
 			children = (
@@ -166,6 +176,7 @@
 		7E65106929815E8D00854B29 /* viewModel */ = {
 			isa = PBXGroup;
 			children = (
+				7E049F1029893C5C006E5B07 /* favorite */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -334,6 +345,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E049F1229893C6B006E5B07 /* FavoriteViewModel.swift in Sources */,
 				7EF48B572984FEAF002D2FEA /* TypeImageRepository.swift in Sources */,
 				7EF48B5C29855727002D2FEA /* TabBarViewController.swift in Sources */,
 				7EF48B6029860ABA002D2FEA /* FloatTextField.swift in Sources */,
@@ -494,7 +506,6 @@
 				INFOPLIST_FILE = pokeDex_clone/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -525,7 +536,6 @@
 				INFOPLIST_FILE = pokeDex_clone/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (

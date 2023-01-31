@@ -47,6 +47,7 @@ class PokeRepository {
         
         
         let INSERT_QUERY_TEXT : String = poke.getInsertQuery();
+//        print(INSERT_QUERY_TEXT)
         
         if sqlite3_prepare(db, INSERT_QUERY_TEXT, -1, &stmt, nil) != SQLITE_OK {
             let errMsg = String(cString: sqlite3_errmsg(db)!)
@@ -56,28 +57,15 @@ class PokeRepository {
         
         let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
         
-//        if sqlite3_bind_text(stmt, 1, title, -1, SQLITE_TRANSIENT) != SQLITE_OK{
-//            let errMsg = String(cString : sqlite3_errmsg(db)!)
-//            print("failture binding name: \(errMsg)")
-//            return
-//        }
-//
-//        if sqlite3_bind_text(stmt, 2, subline, -1, SQLITE_TRANSIENT) != SQLITE_OK{
-//            let errMsg = String(cString : sqlite3_errmsg(db)!)
-//            print("failture binding name: \(errMsg)")
-//            return
-//        }
-//
-//
-//        if sqlite3_bind_text(stmt, 3, date, -1, SQLITE_TRANSIENT) != SQLITE_OK{
-//            let errMsg = String(cString : sqlite3_errmsg(db)!)
-//            print("failture binding name: \(errMsg)")
-//            return
-//        }
         
         if sqlite3_step(stmt) != SQLITE_DONE {
             let errMsg = String(cString : sqlite3_errmsg(db)!)
             print("insert fail :: \(errMsg)")
+            do {
+                try insert(poke: poke)
+            } catch {
+                print(error)
+            }
             return
         }
         
@@ -85,6 +73,8 @@ class PokeRepository {
     
     func update(poke: PokeEntity) {
         let UPDATE_QUERY = poke.getUpdateQuery()
+//        print(UPDATE_QUERY)
+        
         var stmt:OpaquePointer?
         if sqlite3_prepare(db, UPDATE_QUERY, -1, &stmt, nil) != SQLITE_OK{
             let errMsg = String(cString: sqlite3_errmsg(db)!)
@@ -99,5 +89,100 @@ class PokeRepository {
         }
         
         sqlite3_finalize(stmt)
+    }
+    
+    func selectWhereFavorite () -> [PokeEntity] {
+        var pokeList: [PokeEntity] = []
+    
+        let SELECT_QUERY = PokeEntity().getSelectWhereFavorite()
+        var stmt:OpaquePointer?
+        
+        
+        if sqlite3_prepare(db, SELECT_QUERY, -1, &stmt, nil) != SQLITE_OK{
+            let errMsg = String(cString: sqlite3_errmsg(db)!)
+            print("error preparing insert: v1\(errMsg)")
+            return pokeList
+        }
+        
+        while(sqlite3_step(stmt) == SQLITE_ROW){
+            
+            let no = sqlite3_column_int(stmt, 0)
+            let pokeNo = sqlite3_column_int(stmt, 1)
+            let pokeName = String(cString: sqlite3_column_text(stmt, 2))
+            let imgSrc = String(cString: sqlite3_column_text(stmt, 3))
+            let weight = String(cString: sqlite3_column_text(stmt, 4))
+            let height = String(cString: sqlite3_column_text(stmt, 5))
+            let classify = String(cString: sqlite3_column_text(stmt, 6))
+            let attribute = String(cString: sqlite3_column_text(stmt, 7))
+            let des = String(cString: sqlite3_column_text(stmt, 8))
+            let like = sqlite3_column_int(stmt, 9) == 1 ? true : false
+           
+            let poke = PokeEntity()
+            
+            
+            poke.no = Int(no)
+            poke.pokeNo = Int(pokeNo)
+            poke.pokeName = pokeName
+            poke.imgSrc = imgSrc
+            poke.weight = weight
+            poke.height = height
+            poke.classify = classify
+            poke.attribute = attribute
+            poke.des = des
+            poke.like = like
+            
+            pokeList.append(poke)
+        }
+        
+        return pokeList
+    }
+    
+    func selectAll () -> [PokeEntity] {
+        print(#function)
+        var pokeList: [PokeEntity] = []
+        
+        let SELECT_QUERY = PokeEntity().getSelectAll()
+        var stmt:OpaquePointer?
+        
+        
+        if sqlite3_prepare(db, SELECT_QUERY, -1, &stmt, nil) != SQLITE_OK{
+            let errMsg = String(cString: sqlite3_errmsg(db)!)
+            print("error preparing insert: v1\(errMsg)")
+            return pokeList
+        }
+        
+        while(sqlite3_step(stmt) == SQLITE_ROW){
+            
+            let no = sqlite3_column_int(stmt, 0)
+            let pokeNo = sqlite3_column_int(stmt, 1)
+            let pokeName = String(cString: sqlite3_column_text(stmt, 2))
+            let imgSrc = String(cString: sqlite3_column_text(stmt, 3))
+            let weight = String(cString: sqlite3_column_text(stmt, 4))
+            let height = String(cString: sqlite3_column_text(stmt, 5))
+            let classify = String(cString: sqlite3_column_text(stmt, 6))
+            let attribute = String(cString: sqlite3_column_text(stmt, 7))
+            let des = String(cString: sqlite3_column_text(stmt, 8))
+            let like = sqlite3_column_int(stmt, 9) == 1 ? true : false
+            
+            let poke = PokeEntity()
+            
+            
+            poke.no = Int(no)
+            poke.pokeNo = Int(pokeNo)
+            poke.pokeName = pokeName
+            poke.imgSrc = imgSrc
+            poke.weight = weight
+            poke.height = height
+            poke.classify = classify
+            poke.attribute = attribute
+            poke.des = des
+            poke.like = like
+            
+            pokeList.append(poke)
+            
+            poke.println()
+        }
+        
+        return pokeList
     }
 }

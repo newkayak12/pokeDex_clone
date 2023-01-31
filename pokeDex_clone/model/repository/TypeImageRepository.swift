@@ -37,10 +37,11 @@ class TypeImageRepository {
         var stmt: OpaquePointer?
         
         let INSERT_QUERY_TEXT : String = typeImage.getInsertQuery();
+//        print(INSERT_QUERY_TEXT)
         
         if sqlite3_prepare(db, INSERT_QUERY_TEXT, -1, &stmt, nil) != SQLITE_OK {
             let errMsg = String(cString: sqlite3_errmsg(db)!)
-            print("error preparing insert:v1 \(INSERT_QUERY_TEXT)")
+//            print("error preparing insert:v1 \(INSERT_QUERY_TEXT)")
             return
         }
         

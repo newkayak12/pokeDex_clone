@@ -35,15 +35,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func initialize() {
         let isFirst =  UserDefaults.standard.bool(forKey: "isFirst")
         if(!isFirst){
+//        if(true){
             
-            let db = Context.shared
+            
+            let _ = Context.shared
+            Thread.sleep(forTimeInterval: 0.5)
             dbInit()
             UserDefaults.standard.set(true, forKey: "isFirst")
-            
         }
+        
+//        PokeRepository().selectAll()
+        
+        
     }
 
     func dbInit(){
+        print("DBINIT1")
         let pokeListUrl = Bundle.main.url(forResource: "list", withExtension: "json")
         let pokeUpUrl = Bundle.main.url(forResource: "pokeUp", withExtension: "json")
         let typeUrl = Bundle.main.url(forResource: "type", withExtension: "json")
@@ -51,12 +58,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let decoder = JSONDecoder()
         
         do {
+            let pokeRepository = PokeRepository()
+            let typeRepository = TypeRepository()
+            let typeImageRepository = TypeImageRepository()
             
-            try PokeRepository().createTable()
-            try TypeRepository().createTable()
-            try TypeImageRepository().createTable()
+            try pokeRepository.createTable()
+            try typeRepository.createTable()
+            try typeImageRepository.createTable()
             
-            
+            Thread.sleep(forTimeInterval: 0.5)
             
             
             if let url = pokeListUrl {
@@ -64,7 +74,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let json = try Data(contentsOf: url)
                 let parseValue = try decoder.decode([PokeEntity].self, from: json)
                 try parseValue.forEach { poke in
-                    try PokeRepository().insert(poke: poke)
+//                    poke.println()
+                    try pokeRepository.insert(poke: poke)
                 }
             }
             
@@ -73,18 +84,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let json = try Data(contentsOf: url)
                 let parseValue = try decoder.decode([PokeEntity].self, from: json)
                 
+                Thread.sleep(forTimeInterval: 0.5)
+                
                 parseValue.forEach({ poke in
-                    PokeRepository().update(poke: poke)
+//                    poke.println()
+                    pokeRepository.update(poke: poke)
                 })
             }
+            
             
             if let url = typeUrl {
                 print("type")
                 let json = try Data(contentsOf: url)
                 let parseValue = try decoder.decode([TypeEntity].self, from: json)
                 parseValue.forEach({ type in
-                    TypeRepository().insert(type: type)
+//                    type.println()
+                    typeRepository.insert(type: type)
                 })
+                
+                
             }
             
             if let url = typeImageUrl {
@@ -92,7 +110,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let json = try Data(contentsOf: url)
                 let parseValue = try decoder.decode([TypeImageEntity].self, from: json)
                 parseValue.forEach({ typeImg in
-                    TypeImageRepository().insert(typeImage: typeImg)
+//                    typeImg.println()
+                    typeImageRepository.insert(typeImage: typeImg)
                 })
             }
             

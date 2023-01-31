@@ -14,7 +14,20 @@ class Context {
     static let url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("poke.sqlite")
     
     init(){
-        self.db = createSchema()
+        
+//        var absoluteUrl = ""
+//
+//        do {
+//
+//            absoluteUrl = try FileManager.default.url( for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(schemaName).path
+//        } catch {
+//            print(error)
+//        }
+//
+//        print("EXIST \(FileManager.default.fileExists(atPath: absoluteUrl))")
+//        if( !FileManager.default.fileExists(atPath: absoluteUrl) ){
+            self.db = createSchema()
+//        }
     }
     deinit {
         sqlite3_close(db)
