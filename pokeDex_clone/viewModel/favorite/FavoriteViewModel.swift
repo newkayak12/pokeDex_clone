@@ -16,7 +16,8 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
     func fetchData() {
         let repository = PokeRepository()
-        tableData = repository.selectWhereFavorite()
+//        tableData = repository.selectWhereFavorite()
+        tableData = repository.selectAll()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -31,10 +32,46 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print(#function)
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "HI"
-        cell.backgroundColor = .yellow
-        return cell
+        guard let pokeData = tableData else {return cell}
+        guard let customCell = cell as? FavoriteTableViewCell else {
+            print("ERROR")
+            return cell
+        }
+        
+        
+        let poke = pokeData[indexPath.row]
+        customCell.pokeLabel.text = poke.pokeName
+        guard let likeStatus = poke.like else { fatalError()}
+        
+        
+        let url = URL(string: poke.imgSrc!)
+        var request = URLRequest(url: url!)
+        request.httpMethod = "GET"
+        
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                DispatchQueue.main.async { 
+                    if let result = data{
+                        customCell.pokeImg.image = UIImage(data: result)
+                        
+                    }
+                }
+            }
+        }.resume()
+        
+        
+        customCell.likeImg.image = UIImage(named: likeStatus ? customCell.like : customCell.unlike)
+//        customCell.accessoryType = .none
+        return customCell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CGFloat(120)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

@@ -37,8 +37,8 @@ class FloatTextField: NSObject, UITextFieldDelegate {
         guard let container = self.container else {fatalError()}
         
         textfield.delegate = self
-        textfield.returnKeyType = .default
-        textfield.enablesReturnKeyAutomatically = true
+        textfield.returnKeyType = .search
+//        textfield.enablesReturnKeyAutomatically = true
         
         
         placeholderText.text = "  "+placeholder+"  "

@@ -2,22 +2,26 @@
 //  ListViewController.swift
 //  pokeDex_clone
 //
-//  Created by Sang Hyeon kim on 2023/01/29.
+//  Created by Sang Hyeon kim on 2023/02/01.
 //
 
 import UIKit
 
 class ListViewController: UIViewController {
-    var isFavorite: Bool?
-
+    var listViewModel: ListViewModel?
+    var searchText: String = ""
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        listViewModel = ListViewModel()
+        
 
         // Do any additional setup after loading the view.
     }
     
-
+   
     /*
     // MARK: - Navigation
 

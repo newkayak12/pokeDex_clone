@@ -180,7 +180,7 @@ class PokeRepository {
             
             pokeList.append(poke)
             
-            poke.println()
+//            poke.println()
         }
         
         return pokeList

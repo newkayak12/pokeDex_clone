@@ -75,7 +75,7 @@ class FavoriteViewController: UIViewController {
     func drawTableView() {
         tableView.dataSource = favoriteViewModel
         tableView.delegate = favoriteViewModel
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(FavoriteTableViewCell.self, forCellReuseIdentifier: "cell")
         ////        tableView.rowHeight = UITableView.automaticDimension
         ////        tableView.estimatedRowHeight = UITableView.automaticDimension
         view.addSubview(tableView)
