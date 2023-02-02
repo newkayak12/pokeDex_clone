@@ -9,14 +9,18 @@ import Foundation
 
 class ListViewModel: NSObject {
     var collectionData: [PokeEntity]?
-    
+    let pokeRepo = PokeRepository()
     
     override init() {
         super.init()
     }
     
     func search (searchText: String){
-        
+        if searchText == "" {
+            collectionData = pokeRepo.selectAll()
+        } else {
+            collectionData = pokeRepo.selectWhereName(searchText: searchText)
+        }
     }
     
 }

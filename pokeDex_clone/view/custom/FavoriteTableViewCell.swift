@@ -35,20 +35,19 @@ class FavoriteTableViewCell: UITableViewCell {
         self.addSubview(pokeImg)
         self.addSubview(pokeLabel)
         
-        likeImg.image = UIImage(named: isLike ? like : unlike)
-        self.accessoryView = likeImg
-        self.editingAccessoryView = likeImg
+        
+        accessoryView = UIImageView(image: UIImage(systemName: "heart.fill"))
         
         pokeImg.snp.makeConstraints { make in
-            make.centerY.equalTo(self.snp.centerY)
-            make.leading.equalTo(self.snp.leading).offset(20)
-            make.top.equalTo(self.snp.top)
-            make.bottom.equalTo(self.snp.bottom)
+            make.centerY.equalTo(self)
+            make.leading.equalTo(self).offset(20)
+            make.top.equalTo(self)
+            make.bottom.equalTo(self)
             make.width.equalTo(100)
         }
         pokeLabel.snp.makeConstraints { make in
             make.leading.equalTo(pokeImg.snp.trailing).offset(30)
-            make.centerY.equalTo(self.snp.centerY)
+            make.centerY.equalTo(self)
         }
     }
 

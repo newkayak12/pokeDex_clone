@@ -8,7 +8,12 @@
 import Foundation
 import SQLite3
 
-class PokeEntity: Codable {
+class PokeEntity: Codable, Equatable {
+    static func == (lhs: PokeEntity, rhs: PokeEntity) -> Bool {
+        lhs.no == rhs.no
+    }
+    
+  
     var no: Int?;
     var pokeNo: Int?;
     var pokeName: String?;
@@ -19,6 +24,9 @@ class PokeEntity: Codable {
     var attribute: String?;
     var des: String?;
     var like: Bool? = false
+    
+    var pokeImg: Data?;
+    var type: [TypeEntity]?;
     
     func println() {
         print("\(no), \(pokeNo), \(pokeName), \(imgSrc), \(weight), \(height), \(classify), \(attribute), \(des), \(like)")
@@ -51,6 +59,10 @@ class PokeEntity: Codable {
     
     func getSelectAll() -> String {
         return "SELECT * FROM Poke"
+    }
+    
+    func getSelectWhereName (name: String) -> String {
+        return "SELECT Poke.*, Type.pokeNo as 'typePokeNo', Type.background, Type.fontColor, Type.type FROM Poke LEFT JOIN Type On Poke.pokeNo = Type.pokeNo WHERE Poke.pokeName like '%\(name)%'"
     }
 }
 

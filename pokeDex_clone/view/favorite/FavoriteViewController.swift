@@ -9,7 +9,7 @@ import UIKit
 
 class FavoriteViewController: UIViewController {
     let tableView = UITableView(frame: .zero)
-    var favoriteViewModel: FavoriteViewModel?
+    var favoriteViewModel: FavoriteViewModel = FavoriteViewModel()
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -20,10 +20,8 @@ class FavoriteViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         drawNav()
-        favoriteViewModel = FavoriteViewModel()
-        favoriteViewModel!.fetchData()
         
-        if let data = favoriteViewModel!.tableData, data.count > 0 {
+        if let data = favoriteViewModel.tableData, data.count > 0 {
             drawTableView()
         } else {
             drawEmptyView()
@@ -54,21 +52,21 @@ class FavoriteViewController: UIViewController {
         emptyView.addSubview(emptyImageView)
         emptyView.addSubview(emptyLabel)
         emptyImageView.snp.makeConstraints { make in
-            make.centerX.equalTo(emptyView.snp.centerX)
-            make.centerY.equalTo(emptyView.snp.centerY).multipliedBy(0.5)
+            make.centerX.equalTo(emptyView)
+            make.centerY.equalTo(emptyView).multipliedBy(0.5)
         }
         emptyLabel.textAlignment = .center
         emptyLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(emptyView.snp.centerX)
+            make.centerX.equalTo(emptyView)
             make.top.equalTo(emptyImageView.snp.bottom)
         }
         
         view.addSubview(emptyView)
         emptyView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-            make.leading.equalTo(view.snp.leading)
-            make.trailing.equalTo(view.snp.trailing)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.leading.equalTo(view)
+            make.trailing.equalTo(view)
         }
         
     }
@@ -80,10 +78,10 @@ class FavoriteViewController: UIViewController {
         ////        tableView.estimatedRowHeight = UITableView.automaticDimension
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top)
-            make.leading.equalTo(view.snp.leading)
-            make.trailing.equalTo(view.snp.trailing)
-            make.bottom.equalTo(view.snp.bottom)
+            make.top.equalTo(view)
+            make.leading.equalTo(view)
+            make.trailing.equalTo(view)
+            make.bottom.equalTo(view)
         }
     }
     

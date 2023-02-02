@@ -13,11 +13,9 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     override init() {
         super.init()
-    }
-    func fetchData() {
         let repository = PokeRepository()
-//        tableData = repository.selectWhereFavorite()
         tableData = repository.selectAll()
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -48,6 +46,7 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
         let url = URL(string: poke.imgSrc!)
         var request = URLRequest(url: url!)
         request.httpMethod = "GET"
+        request.cachePolicy = .returnCacheDataElseLoad
         
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
@@ -55,14 +54,11 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
                 DispatchQueue.main.async { 
                     if let result = data{
                         customCell.pokeImg.image = UIImage(data: result)
-                        
                     }
                 }
             }
         }.resume()
-        
-        
-        customCell.likeImg.image = UIImage(named: likeStatus ? customCell.like : customCell.unlike)
+        customCell.accessoryView = UIImageView(image: UIImage(systemName: likeStatus ? customCell.like : customCell.unlike))
 //        customCell.accessoryType = .none
         return customCell
     }
