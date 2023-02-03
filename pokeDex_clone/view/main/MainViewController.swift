@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+
 class MainViewController: UIViewController {
     let logoImageView = UIImageView()
     let logoImage = UIImage(named: "logo")
@@ -101,8 +102,12 @@ class MainViewController: UIViewController {
     @objc func search() {
         guard let searchText = floatInputBox.textfield!.text else {return}
         floatInputBox.textfield!.endEditing(true)
+        let listViewModel = ListViewModel()
+        listViewModel.search(searchText: searchText)
+        let listViewController = ListViewController(listViewModel: listViewModel);
         
-        let listViewController = ListViewController();
+        
+        
         let navigationController = UINavigationController(rootViewController: listViewController)
         listViewController.searchText = searchText
         navigationController.modalPresentationStyle = .fullScreen

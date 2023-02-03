@@ -9,8 +9,16 @@ import UIKit
 
 class FavoriteViewController: UIViewController {
     let tableView = UITableView(frame: .zero)
-    var favoriteViewModel: FavoriteViewModel = FavoriteViewModel()
+    var favoriteViewModel: FavoriteViewModel
     
+    init(favoriteViewModel: FavoriteViewModel) {
+        self.favoriteViewModel = favoriteViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -65,8 +73,8 @@ class FavoriteViewController: UIViewController {
         emptyView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalTo(view)
-            make.trailing.equalTo(view)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
         }
         
     }
@@ -78,10 +86,8 @@ class FavoriteViewController: UIViewController {
         ////        tableView.estimatedRowHeight = UITableView.automaticDimension
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(view)
-            make.leading.equalTo(view)
-            make.trailing.equalTo(view)
-            make.bottom.equalTo(view)
+            make.verticalEdges.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
         }
     }
     

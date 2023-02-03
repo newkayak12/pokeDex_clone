@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 class ListViewModel: NSObject {
     var collectionData: [PokeEntity]?
     let pokeRepo = PokeRepository()
