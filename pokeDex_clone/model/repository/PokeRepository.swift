@@ -140,6 +140,7 @@ class PokeRepository {
     func selectAll () -> [PokeEntity] {
         print(#function)
         var pokeList: [PokeEntity] = []
+        var typeList: [TypeEntity] = []
         
         let SELECT_QUERY = PokeEntity().getSelectAll()
         var stmt:OpaquePointer?
@@ -164,7 +165,15 @@ class PokeRepository {
             let des = String(cString: sqlite3_column_text(stmt, 8))
             let like = sqlite3_column_int(stmt, 9) == 1 ? true : false
             
+           
+            let typeNo = Int(sqlite3_column_int(stmt, 10))
+            let typePokeNo = Int(sqlite3_column_int(stmt, 11))
+            let background = String(cString: sqlite3_column_text(stmt, 12))
+            let fontColor = String(cString: sqlite3_column_text(stmt, 13))
+            let type = String(cString: sqlite3_column_text(stmt, 14))
+            
             let poke = PokeEntity()
+            let typeEntity = TypeEntity()
             
             
             poke.no = Int(no)
@@ -178,12 +187,25 @@ class PokeRepository {
             poke.des = des
             poke.like = like
             
+            typeEntity.no = typeNo
+            typeEntity.pokeNo = typePokeNo
+            typeEntity.background = background
+            typeEntity.fontColor = fontColor
+            typeEntity.type = type
+            
+            
             pokeList.append(poke)
+            typeList.append(typeEntity)
             
 //            poke.println()
         }
         
-        return pokeList
+        let pok = pokeList.unique { $0.no }
+        pok.forEach { pokEntity in
+            pokEntity.type = typeList.filter {$0.no == pokEntity.no}
+        }
+        
+        return pok
     }
     
     
@@ -216,10 +238,11 @@ class PokeRepository {
             let des = String(cString: sqlite3_column_text(stmt, 8))
             let like = sqlite3_column_int(stmt, 9) == 1 ? true : false
             
-            let typePokeNo = Int(sqlite3_column_int(stmt, 10))
-            let background = String(cString: sqlite3_column_text(stmt, 11))
-            let fontColor = String(cString: sqlite3_column_text(stmt, 12))
-            let type = String(cString: sqlite3_column_text(stmt, 13))
+            let typeNo = Int(sqlite3_column_int(stmt, 10))
+            let typePokeNo = Int(sqlite3_column_int(stmt, 11))
+            let background = String(cString: sqlite3_column_text(stmt, 12))
+            let fontColor = String(cString: sqlite3_column_text(stmt, 13))
+            let type = String(cString: sqlite3_column_text(stmt, 14))
             
             let poke = PokeEntity()
             let typeEntity = TypeEntity()
@@ -236,6 +259,7 @@ class PokeRepository {
             poke.des = des
             poke.like = like
             
+            typeEntity.no = typeNo
             typeEntity.pokeNo = typePokeNo
             typeEntity.background = background
             typeEntity.fontColor = fontColor
@@ -250,7 +274,10 @@ class PokeRepository {
         
         let pok = pokeList.unique { $0.no }
         pok.forEach { pokEntity in
-            pokEntity.type = typeList.filter {$0.pokeNo == pokEntity.pokeNo}
+            pokEntity.type = typeList.filter {
+                print("TYPE NO \($0.no) : POKE NO \(pokEntity.no)")
+                return $0.no == pokEntity.no
+            }
         }
         
         return pok

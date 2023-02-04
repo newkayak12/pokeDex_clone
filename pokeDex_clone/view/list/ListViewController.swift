@@ -10,7 +10,11 @@ import UIKit
 class ListViewController: UIViewController {
     var listViewModel: ListViewModel
     var searchText: String = ""
+    let collectionViewInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    let minimumSpaceBetweenItemHorizontally = CGFloat(20)
+    let minimumSpaceBetweenItemVertically = CGFloat(20)
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    
     
     init(listViewModel: ListViewModel) {
         self.listViewModel = listViewModel
@@ -98,30 +102,77 @@ class ListViewController: UIViewController {
 
 
 extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return minimumSpaceBetweenItemVertically
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return minimumSpaceBetweenItemHorizontally
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return collectionViewInset
+    }
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         print(#function)
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         print(#function)
-        return CGSize(width: 100, height: 100)
+        let size = ( view.bounds.width - ( (collectionViewInset.left + collectionViewInset.right) + minimumSpaceBetweenItemHorizontally) ) / 2
+        return CGSize(width: size.rounded(.down), height: size.rounded(.down) * 1.4)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print(#function)
-        return 20
+        guard let list = listViewModel.collectionData else { return 0}
+        return list.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print(#function)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         guard let custom = cell as? ListCollectionViewCell else {return cell}
+        print("?")
         guard let item = listViewModel.collectionData else {return cell}
         let itemPiece = item[indexPath.row]
-        custom.pokeNumberLabel.text = itemPiece.pokeName
+        custom.pokeNumberLabel.text = "no. \(itemPiece.pokeNo!)"
+        custom.pokeName.text = itemPiece.pokeName
+        
+        
+        
+        let url = URL(string: itemPiece.imgSrc!)
+        var request = URLRequest(url: url!)
+        request.httpMethod = "GET"
+        request.cachePolicy = .returnCacheDataElseLoad
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                DispatchQueue.main.async {
+                    if let result = data{
+                        custom.image.image = UIImage(data: result)
+                    }
+                }
+            }
+        }.resume()
+        
+        custom.backgroundColor = .systemBackground
+        
+    
+
+    
         return custom
     }
     
     
     
+}
+
+extension UIColor {
+    convenience init(rgbHex: Int) {
+        
+        self.init(
+            red: CGFloat((rgbHex >> 16) & 0xFF),
+            green: CGFloat((rgbHex >> 8) & 0xFF),
+            blue: CGFloat(rgbHex & 0xFF),
+            alpha: CGFloat(1.0)
+        )
+    }
 }

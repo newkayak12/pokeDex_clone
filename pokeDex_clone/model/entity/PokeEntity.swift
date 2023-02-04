@@ -58,11 +58,11 @@ class PokeEntity: Codable, Equatable {
     }
     
     func getSelectAll() -> String {
-        return "SELECT * FROM Poke"
+        return "SELECT Poke.*, Type.no as 'typeNo', Type.pokeNo as 'typePokeNo', Type.background, Type.fontColor, Type.typeName FROM Poke LEFT JOIN Type On Poke.no = Type.no"
     }
     
     func getSelectWhereName (name: String) -> String {
-        return "SELECT Poke.*, Type.pokeNo as 'typePokeNo', Type.background, Type.fontColor, Type.type FROM Poke LEFT JOIN Type On Poke.pokeNo = Type.pokeNo WHERE Poke.pokeName like '%\(name)%'"
+        return "SELECT Poke.*, Type.no as 'typeNo', Type.pokeNo as 'typePokeNo', Type.background, Type.fontColor, Type.typeName FROM Poke LEFT JOIN Type On Poke.no = Type.no WHERE Poke.pokeName like '%\(name)%'"
     }
 }
 
