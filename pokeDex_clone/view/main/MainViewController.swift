@@ -109,6 +109,7 @@ class MainViewController: UIViewController {
         
         
         let navigationController = UINavigationController(rootViewController: listViewController)
+        navigationController.navigationBar.overrideUserInterfaceStyle = .dark
         listViewController.searchText = searchText
         navigationController.modalPresentationStyle = .fullScreen
         present(navigationController, animated: true)

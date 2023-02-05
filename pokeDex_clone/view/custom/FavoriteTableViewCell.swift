@@ -31,7 +31,12 @@ class FavoriteTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    override func prepareForReuse() {
+        pokeImg.image = UIImage(named: "skeleton")
+    }
+    
     func draw() {
+        pokeImg.image = UIImage(named: "skeleton")
         self.addSubview(pokeImg)
         self.addSubview(pokeLabel)
         

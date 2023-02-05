@@ -15,6 +15,9 @@ class ListViewController: UIViewController {
     let minimumSpaceBetweenItemVertically = CGFloat(20)
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
     
     init(listViewModel: ListViewModel) {
         self.listViewModel = listViewModel
@@ -25,6 +28,10 @@ class ListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +54,18 @@ class ListViewController: UIViewController {
         
     }
     func drawNavBar(){
+        let backbutton = UIButton(type: .custom)
+        
+        
+        backbutton.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
+        backbutton.setTitle("Back", for: .normal)
+        backbutton.setTitleColor(.white, for: .normal)
+        backbutton.tintColor = .white
+        backbutton.addTarget(self, action: #selector(backward), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
+        
+        
+        
         let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()
         navAppearance.backgroundColor = UIColor(named: "AccentColor")
@@ -96,6 +115,10 @@ class ListViewController: UIViewController {
         }
         
     }
+    
+    @objc func backward() {
+       dismiss(animated: true)
+    }
 }
 
 
@@ -131,12 +154,14 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         print(#function)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
         guard let custom = cell as? ListCollectionViewCell else {return cell}
-        print("?")
+        
         guard let item = listViewModel.collectionData else {return cell}
         let itemPiece = item[indexPath.row]
         custom.pokeNumberLabel.text = "no. \(itemPiece.pokeNo!)"
         custom.pokeName.text = itemPiece.pokeName
         
+        print(itemPiece.pokeName)
+        itemPiece.type?.forEach{print($0.type)}
         
         
         let url = URL(string: itemPiece.imgSrc!)
@@ -155,13 +180,55 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         custom.backgroundColor = .systemBackground
         
-    
-
-    
+        let container = UIStackView(frame: .zero)
+        container.axis = .horizontal
+      
+        container.distribution = .equalSpacing
+        container.alignment = .fill
+        
+        custom.typeView.addSubview(container)
+        container.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        container.layoutIfNeeded()
+        let containerWidth = container.layer.frame.width
+        let containerPerCountWidth = ((containerWidth / 10).rounded(.down) * 10) / CGFloat(itemPiece.type?.count ?? 1)
+        let insets = containerWidth - (containerWidth / 10).rounded(.down) * 10
+        container.spacing = CGFloat(3)
+        var count = 0
+        itemPiece.type?.forEach{
+            let label = UILabel(frame: .zero)
+            label.text = $0.type
+            label.layer.borderColor = UIColor.lightGray.cgColor
+            label.layer.borderWidth = 0.1
+            label.layer.cornerRadius = 5
+            label.clipsToBounds = true
+            if let value = $0.type {
+                label.backgroundColor = ColorSet.pick(type: value)
+            }
+            label.textAlignment = .center
+            container.addSubview(label)
+            label.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                print(containerPerCountWidth)
+                print(CGFloat(insets / CGFloat((count + 2))) + CGFloat(containerPerCountWidth * CGFloat(count)))
+                make.leading.equalToSuperview().offset(CGFloat(3 * (count + 1)) + CGFloat(containerPerCountWidth * CGFloat(count)))
+                make.width.equalTo(containerPerCountWidth)
+            }
+            count += 1
+        }
         return custom
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        guard let data = listViewModel.collectionData else {return}
+        let selectedData = data[indexPath.row]
+        
+        let detailViewController = DetailViewController(data: selectedData)
+        detailViewController.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(detailViewController, animated: true)
+    }
     
 }
 

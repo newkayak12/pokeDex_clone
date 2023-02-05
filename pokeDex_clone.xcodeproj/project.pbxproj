@@ -12,6 +12,8 @@
 		7E049F1A298A8FA6006E5B07 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E049F19298A8FA6006E5B07 /* ListViewController.swift */; };
 		7E049F1C298A921A006E5B07 /* FavoriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E049F1B298A921A006E5B07 /* FavoriteTableViewCell.swift */; };
 		7E049F1E298BE254006E5B07 /* ListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E049F1D298BE254006E5B07 /* ListCollectionViewCell.swift */; };
+		7E049F20298F7624006E5B07 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E049F1F298F7624006E5B07 /* DetailViewController.swift */; };
+		7E049F22298FA216006E5B07 /* ColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E049F21298FA216006E5B07 /* ColorSet.swift */; };
 		7E65104B29815C1E00854B29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E65104A29815C1E00854B29 /* AppDelegate.swift */; };
 		7E65104F29815C1E00854B29 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E65104E29815C1E00854B29 /* MainViewController.swift */; };
 		7E65105429815C1F00854B29 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E65105329815C1F00854B29 /* Assets.xcassets */; };
@@ -44,6 +46,8 @@
 		7E049F19298A8FA6006E5B07 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		7E049F1B298A921A006E5B07 /* FavoriteTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTableViewCell.swift; sourceTree = "<group>"; };
 		7E049F1D298BE254006E5B07 /* ListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCollectionViewCell.swift; sourceTree = "<group>"; };
+		7E049F1F298F7624006E5B07 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		7E049F21298FA216006E5B07 /* ColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSet.swift; sourceTree = "<group>"; };
 		7E65104729815C1E00854B29 /* pokeDex_clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pokeDex_clone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E65104A29815C1E00854B29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7E65104E29815C1E00854B29 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +164,7 @@
 				7EF48B5F29860ABA002D2FEA /* FloatTextField.swift */,
 				7E049F1B298A921A006E5B07 /* FavoriteTableViewCell.swift */,
 				7E049F1D298BE254006E5B07 /* ListCollectionViewCell.swift */,
+				7E049F21298FA216006E5B07 /* ColorSet.swift */,
 			);
 			path = custom;
 			sourceTree = "<group>";
@@ -227,6 +232,7 @@
 		7E7364BD298662EC0007327D /* detail */ = {
 			isa = PBXGroup;
 			children = (
+				7E049F1F298F7624006E5B07 /* DetailViewController.swift */,
 			);
 			path = detail;
 			sourceTree = "<group>";
@@ -364,6 +370,7 @@
 			files = (
 				7E049F1229893C6B006E5B07 /* FavoriteViewModel.swift in Sources */,
 				7EF48B572984FEAF002D2FEA /* TypeImageRepository.swift in Sources */,
+				7E049F22298FA216006E5B07 /* ColorSet.swift in Sources */,
 				7EF48B5C29855727002D2FEA /* TabBarViewController.swift in Sources */,
 				7EF48B6029860ABA002D2FEA /* FloatTextField.swift in Sources */,
 				7E7364C1298666180007327D /* NavigationViewController.swift in Sources */,
@@ -373,6 +380,7 @@
 				7E049F1A298A8FA6006E5B07 /* ListViewController.swift in Sources */,
 				7E049F1C298A921A006E5B07 /* FavoriteTableViewCell.swift in Sources */,
 				7E7EDB2C2981656B00C342FC /* PokeEntity.swift in Sources */,
+				7E049F20298F7624006E5B07 /* DetailViewController.swift in Sources */,
 				7EBE01CF2984D32C00E8F158 /* TypeRepository.swift in Sources */,
 				7E65106E29815F4C00854B29 /* Services.swift in Sources */,
 				7EA3D70E2984E48C00FB6AAA /* SceneDelegate.swift in Sources */,

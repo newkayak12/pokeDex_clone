@@ -6,6 +6,9 @@
 //
 
 import UIKit
+protocol PresentDelegate {
+    func present(viewController: DetailViewController);
+}
 
 class FavoriteViewController: UIViewController {
     let tableView = UITableView(frame: .zero)
@@ -14,6 +17,7 @@ class FavoriteViewController: UIViewController {
     init(favoriteViewModel: FavoriteViewModel) {
         self.favoriteViewModel = favoriteViewModel
         super.init(nibName: nil, bundle: nil)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -23,6 +27,7 @@ class FavoriteViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
+        self.favoriteViewModel.deletgate = self
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,3 +103,8 @@ class FavoriteViewController: UIViewController {
 
 }
 
+extension FavoriteViewController: PresentDelegate {
+    func present(viewController: DetailViewController) {
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+}

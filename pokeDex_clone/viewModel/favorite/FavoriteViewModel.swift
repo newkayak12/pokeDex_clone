@@ -10,6 +10,7 @@ import UIKit
 class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     var tableData: [PokeEntity]?
+    var deletgate: PresentDelegate?
     
     override init() {
         super.init()
@@ -69,5 +70,13 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        guard let data = tableData else {return}
+        let selectedData = data[indexPath.row]
+
+        let detailViewController = DetailViewController(data: selectedData)
+        if let delegateTarget = deletgate {
+            detailViewController.modalPresentationStyle = .fullScreen
+            delegateTarget.present(viewController: detailViewController)
+        }
     }
 }

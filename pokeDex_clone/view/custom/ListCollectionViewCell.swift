@@ -21,8 +21,15 @@ class ListCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        image.image = UIImage(named: "skeleton")
+//        typeView.removeFromSuperview()
+        
+    }
     
     func drawUI() {
+        image.image = UIImage(named: "skeleton")
         self.addSubview(image)
         self.layer.borderColor = UIColor.systemGray.cgColor
         self.layer.borderWidth = CGFloat(0.2)
@@ -51,6 +58,7 @@ class ListCollectionViewCell: UICollectionViewCell {
         
         self.addSubview(typeView)
         typeView.snp.makeConstraints { make in
+            make.height.equalTo(20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview().offset(-10)
