@@ -91,6 +91,28 @@ class PokeRepository {
         sqlite3_finalize(stmt)
     }
     
+    func changeLike(poke: PokeEntity)  -> Int {
+        
+        let UPDATE_QUERY = poke.getUpdateFavoriteStatus(no: poke.no!, value: !poke.like!)
+        //        print(UPDATE_QUERY)
+        
+        var stmt:OpaquePointer?
+        if sqlite3_prepare(db, UPDATE_QUERY, -1, &stmt, nil) != SQLITE_OK{
+            let errMsg = String(cString: sqlite3_errmsg(db)!)
+            print("error preparing update: v1\(errMsg)")
+            return 0
+        }
+        
+        if sqlite3_step(stmt) != SQLITE_DONE {
+            let errMsg = String(cString : sqlite3_errmsg(db)!)
+            print("update fail :: \(errMsg)")
+            return 0
+        }
+        
+        sqlite3_finalize(stmt)
+        return 1
+    }
+    
     func selectWhereFavorite () -> [PokeEntity] {
         var pokeList: [PokeEntity] = []
     
@@ -297,4 +319,6 @@ extension Array {
         
         return arrayOrdered
     }
+    
+    
 }

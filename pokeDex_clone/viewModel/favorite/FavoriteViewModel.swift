@@ -15,7 +15,7 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
     override init() {
         super.init()
         let repository = PokeRepository()
-        tableData = repository.selectAll()
+        tableData = repository.selectWhereFavorite()
         
     }
     
@@ -73,10 +73,23 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
         guard let data = tableData else {return}
         let selectedData = data[indexPath.row]
 
-        let detailViewController = DetailViewController(data: selectedData)
+        let detailViewController = DetailViewController(data: selectedData, detailViewModel: DetailViewModel())
         if let delegateTarget = deletgate {
             detailViewController.modalPresentationStyle = .fullScreen
             delegateTarget.present(viewController: detailViewController)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        guard let data = tableData else {return}
+        let selectedData = data[indexPath.row]
+        selectedData.println()
+        let repository = PokeRepository()
+        let result = repository.changeLike(poke: selectedData)
+        print(result)
+        if result > 0 {
+            tableData = repository.selectWhereFavorite()
+            tableView.reloadData()
         }
     }
 }

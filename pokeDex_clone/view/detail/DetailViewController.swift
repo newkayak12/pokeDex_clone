@@ -14,6 +14,9 @@ class DetailViewController: UIViewController {
     let stackWeightHeightClass = UIStackView(frame: .zero)
     let stackType = UIStackView(frame: .zero)
     let descTextView = UITextView(frame: .zero)
+    var imgView = UIImageView(image: UIImage(systemName: "heart",withConfiguration: UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: CGFloat(20.0)))))
+    
+    var detailViewModel: DetailViewModel
     var data: PokeEntity
     
    
@@ -30,8 +33,9 @@ class DetailViewController: UIViewController {
      like
      */
 
-    init(data: PokeEntity) {
+    init(data: PokeEntity, detailViewModel: DetailViewModel) {
         self.data = data
+        self.detailViewModel = detailViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -107,9 +111,21 @@ class DetailViewController: UIViewController {
         noLabel.text =  "No. \(data.pokeNo ?? 000)"
         let nameLabel = UILabel(frame: .zero)
         nameLabel.text = data.pokeName ?? "Poké"
-        let isFavView = UIImageView(frame: .zero)
-        isFavView.image = UIImage(systemName: "heart",withConfiguration: UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: CGFloat(20.0))))
-        isFavView.contentMode = .scaleAspectFit
+        let isFavView = UIButton(frame: .zero)
+        isFavView.addTarget(self, action: #selector(changeLikeStatus), for: .touchUpInside)
+        
+        if let like = data.like {
+            imgView = UIImageView(image: UIImage(systemName: like ? "heart.fill" : "heart",withConfiguration: UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: CGFloat(20.0)))))
+        }
+        
+        
+        
+        imgView.contentMode = .scaleAspectFit
+        isFavView.addSubview(imgView)
+        imgView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
         stackNoNameIsFav.addSubview(noLabel)
         noLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
@@ -237,5 +253,24 @@ class DetailViewController: UIViewController {
         navigationController?.navigationBar.tintColor = UIColor.white
 //        navigationController?.navigationBar.topItem?.title = "no. \(data.pokeNo) \(data.pokeName)"
         navigationItem.title = data.pokeName!
+    }
+    
+    @objc func changeLikeStatus() {
+        guard let like = data.like else { return }
+        let text = like ? "좋아요를 해제하시겠습니까?" : "좋아요 하시겠습니까?"
+        let alert = UIAlertController(title: "좋아요", message: text, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: { [weak self] action in
+            self!.changeAction()
+        }))
+        present(alert, animated: true)
+    }
+    
+    func changeAction() {
+        if let like =  data.like, like != detailViewModel.changeLikeStatus(poke: data){
+            print(like)
+            imgView = UIImageView(image: UIImage(systemName: !like ? "heart.fill" : "heart",withConfiguration: UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: CGFloat(20.0)))))
+            self.loadViewIfNeeded()
+        }
     }
 }

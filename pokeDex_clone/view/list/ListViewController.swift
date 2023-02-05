@@ -225,7 +225,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let data = listViewModel.collectionData else {return}
         let selectedData = data[indexPath.row]
         
-        let detailViewController = DetailViewController(data: selectedData)
+        let detailViewController = DetailViewController(data: selectedData, detailViewModel: DetailViewModel())
         detailViewController.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(detailViewController, animated: true)
     }

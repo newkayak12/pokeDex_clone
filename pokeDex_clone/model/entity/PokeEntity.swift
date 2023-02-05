@@ -64,5 +64,9 @@ class PokeEntity: Codable, Equatable {
     func getSelectWhereName (name: String) -> String {
         return "SELECT Poke.*, Type.no as 'typeNo', Type.pokeNo as 'typePokeNo', Type.background, Type.fontColor, Type.typeName FROM Poke LEFT JOIN Type On Poke.no = Type.no WHERE Poke.pokeName like '%\(name)%'"
     }
+    
+    func getUpdateFavoriteStatus(no: Int, value: Bool) -> String {
+        return "UPDATE Poke SET like == \(value) WHERE no == \(no)"
+    }
 }
 
