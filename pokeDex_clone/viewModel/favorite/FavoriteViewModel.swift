@@ -11,12 +11,18 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     var tableData: [PokeEntity]?
     var deletgate: PresentDelegate?
+    var repository: PokeRepository?
+
+
+    init(reposit: PokeRepository) {
+        self.repository = reposit
+//        tableData = repository?.selectWhereFavorite()
+    }
     
-    override init() {
-        super.init()
-        let repository = PokeRepository()
-        tableData = repository.selectWhereFavorite()
-        
+    func fetchData() -> Bool{
+        print("fetch")
+        tableData = repository?.selectWhereFavorite()
+        return true
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

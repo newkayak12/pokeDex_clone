@@ -18,24 +18,13 @@ class TabBarViewController: UITabBarController {
         main.tabBarItem.title = "Home"
         main.tabBarItem.image = homeImage
         
-        let fav = NavigationViewController(rootViewController: FavoriteViewController(favoriteViewModel: FavoriteViewModel()))
+       
+        let fav = NavigationViewController(rootViewController: FavoriteViewController(favoriteViewModel: FavoriteViewModel(reposit: PokeRepository())))
         fav.tabBarItem.title = "Favorite"
         fav.tabBarItem.image = favImage
         fav.navigationBar.overrideUserInterfaceStyle = .dark
         viewControllers = [main, fav]
         tabBar.backgroundColor = .systemGroupedBackground
     }
-
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

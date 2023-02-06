@@ -274,4 +274,5 @@ class DetailViewController: UIViewController {
             self.loadViewIfNeeded()
         }
     }
+    
 }

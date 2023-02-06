@@ -173,8 +173,11 @@ class PokeRepository {
         
         let pok = pokeList.unique { $0.no }
         pok.forEach { pokEntity in
+            pokEntity.println()
             pokEntity.type = typeList.filter {$0.no == pokEntity.no}
         }
+        
+        
         
         return pok
     }

@@ -20,6 +20,7 @@ class FavoriteViewController: UIViewController {
         
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -27,11 +28,15 @@ class FavoriteViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
+       
         self.favoriteViewModel.deletgate = self
+
     }
     override func viewDidLoad() {
+        print(#function)
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        self.favoriteViewModel.fetchData()
         drawNav()
         
         if let data = favoriteViewModel.tableData, data.count > 0 {
