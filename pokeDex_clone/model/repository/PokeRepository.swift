@@ -115,6 +115,7 @@ class PokeRepository {
     
     func selectWhereFavorite () -> [PokeEntity] {
         var pokeList: [PokeEntity] = []
+        var typeList: [TypeEntity] = []
     
         let SELECT_QUERY = PokeEntity().getSelectWhereFavorite()
         var stmt:OpaquePointer?
@@ -138,8 +139,15 @@ class PokeRepository {
             let attribute = String(cString: sqlite3_column_text(stmt, 7))
             let des = String(cString: sqlite3_column_text(stmt, 8))
             let like = sqlite3_column_int(stmt, 9) == 1 ? true : false
-           
+            
+            let typeNo = Int(sqlite3_column_int(stmt, 10))
+            let typePokeNo = Int(sqlite3_column_int(stmt, 11))
+            let background = String(cString: sqlite3_column_text(stmt, 12))
+            let fontColor = String(cString: sqlite3_column_text(stmt, 13))
+            let type = String(cString: sqlite3_column_text(stmt, 14))
+            
             let poke = PokeEntity()
+            let typeEntity = TypeEntity()
             
             
             poke.no = Int(no)
@@ -153,10 +161,22 @@ class PokeRepository {
             poke.des = des
             poke.like = like
             
+            typeEntity.no = typeNo
+            typeEntity.pokeNo = typePokeNo
+            typeEntity.background = background
+            typeEntity.fontColor = fontColor
+            typeEntity.type = type
+            
             pokeList.append(poke)
+            typeList.append(typeEntity)
         }
         
-        return pokeList
+        let pok = pokeList.unique { $0.no }
+        pok.forEach { pokEntity in
+            pokEntity.type = typeList.filter {$0.no == pokEntity.no}
+        }
+        
+        return pok
     }
     
     func selectAll () -> [PokeEntity] {
@@ -192,7 +212,11 @@ class PokeRepository {
             let typePokeNo = Int(sqlite3_column_int(stmt, 11))
             let background = String(cString: sqlite3_column_text(stmt, 12))
             let fontColor = String(cString: sqlite3_column_text(stmt, 13))
-            let type = String(cString: sqlite3_column_text(stmt, 14))
+            var type = ""
+            if let t = sqlite3_column_text(stmt, 14) {
+                 type = String(cString: t)
+            }
+            
             
             let poke = PokeEntity()
             let typeEntity = TypeEntity()

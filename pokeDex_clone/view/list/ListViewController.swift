@@ -160,63 +160,61 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         custom.pokeNumberLabel.text = "no. \(itemPiece.pokeNo!)"
         custom.pokeName.text = itemPiece.pokeName
         
-        print(itemPiece.pokeName)
-        itemPiece.type?.forEach{print($0.type)}
         
-        
-        let url = URL(string: itemPiece.imgSrc!)
-        var request = URLRequest(url: url!)
-        request.httpMethod = "GET"
-        request.cachePolicy = .returnCacheDataElseLoad
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                DispatchQueue.main.async {
-                    if let result = data{
-                        custom.image.image = UIImage(data: result)
-                    }
-                }
-            }
-        }.resume()
-        
+//        let url = URL(string: itemPiece.imgSrc!)
+//        var request = URLRequest(url: url!)
+//        request.httpMethod = "GET"
+//        request.cachePolicy = .returnCacheDataElseLoad
+//        URLSession.shared.dataTask(with: request) { (data, response, error) in
+//            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+//                DispatchQueue.main.async {
+//                    if let result = data{
+//                        custom.image.image = UIImage(data: result)
+//                    }
+//                }
+//            }
+//        }.resume()
+        Services.defaults.fetchImage(itemPiece.imgSrc!, tableCell: nil, collectionCell: custom)
         custom.backgroundColor = .systemBackground
+        custom.drawStackView(typeEntity: itemPiece.type)
         
-        let container = UIStackView(frame: .zero)
-        container.axis = .horizontal
-      
-        container.distribution = .equalSpacing
-        container.alignment = .fill
-        
-        custom.typeView.addSubview(container)
-        container.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        container.layoutIfNeeded()
-        let containerWidth = container.layer.frame.width
-        let containerPerCountWidth = ((containerWidth / 10).rounded(.down) * 10) / CGFloat(itemPiece.type?.count ?? 1)
-        let insets = containerWidth - (containerWidth / 10).rounded(.down) * 10
-        container.spacing = CGFloat(3)
-        var count = 0
-        itemPiece.type?.forEach{
-            let label = UILabel(frame: .zero)
-            label.text = $0.type
-            label.layer.borderColor = UIColor.lightGray.cgColor
-            label.layer.borderWidth = 0.1
-            label.layer.cornerRadius = 5
-            label.clipsToBounds = true
-            if let value = $0.type {
-                label.backgroundColor = ColorSet.pick(type: value)
-            }
-            label.textAlignment = .center
-            container.addSubview(label)
-            label.snp.makeConstraints { make in
-                make.top.bottom.equalToSuperview()
-                print(containerPerCountWidth)
-                print(CGFloat(insets / CGFloat((count + 2))) + CGFloat(containerPerCountWidth * CGFloat(count)))
-                make.leading.equalToSuperview().offset(CGFloat(3 * (count + 1)) + CGFloat(containerPerCountWidth * CGFloat(count)))
-                make.width.equalTo(containerPerCountWidth)
-            }
-            count += 1
-        }
+//        let container = UIStackView(frame: .zero)
+//        container.axis = .horizontal
+//      
+//        container.distribution = .equalSpacing
+//        container.alignment = .fill
+//        
+//        custom.typeView.addSubview(container)
+//        container.snp.makeConstraints { make in
+//            make.edges.equalToSuperview()
+//        }
+//        container.layoutIfNeeded()
+//        let containerWidth = container.layer.frame.width
+//        let containerPerCountWidth = ((containerWidth / 10).rounded(.down) * 10) / CGFloat(itemPiece.type?.count ?? 1)
+//        let insets = containerWidth - (containerWidth / 10).rounded(.down) * 10
+//        container.spacing = CGFloat(3)
+//        var count = 0
+//        itemPiece.type?.forEach{
+//            let label = UILabel(frame: .zero)
+//            label.text = $0.type
+//            label.layer.borderColor = UIColor.lightGray.cgColor
+//            label.layer.borderWidth = 0.1
+//            label.layer.cornerRadius = 5
+//            label.clipsToBounds = true
+//            if let value = $0.type {
+//                label.backgroundColor = ColorSet.pick(type: value)
+//            }
+//            label.textAlignment = .center
+//            container.addSubview(label)
+//            label.snp.makeConstraints { make in
+//                make.top.bottom.equalToSuperview()
+//                print(containerPerCountWidth)
+//                print(CGFloat(insets / CGFloat((count + 2))) + CGFloat(containerPerCountWidth * CGFloat(count)))
+//                make.leading.equalToSuperview().offset(CGFloat(3 * (count + 1)) + CGFloat(containerPerCountWidth * CGFloat(count)))
+//                make.width.equalTo(containerPerCountWidth)
+//            }
+//            count += 1
+//        }
         return custom
     }
     

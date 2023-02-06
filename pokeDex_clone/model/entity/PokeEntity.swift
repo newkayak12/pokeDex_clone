@@ -54,7 +54,7 @@ class PokeEntity: Codable, Equatable {
     }
     
     func getSelectWhereFavorite () -> String {
-        return "SELECT * FROM Poke WHERE Poke.like == true"
+        return "SELECT Poke.*, Type.no as 'typeNo', Type.pokeNo as 'typePokeNo', Type.background, Type.fontColor, Type.typeName FROM Poke LEFT JOIN Type On Poke.no = Type.no WHERE Poke.like == true"
     }
     
     func getSelectAll() -> String {

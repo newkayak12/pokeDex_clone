@@ -10,26 +10,30 @@ import Foundation
 
 class Services {
     public static let defaults = Services()
-    
+    private var request: URLRequest
     private init() {
+        request = URLRequest(url: URL(string: "http://www.naver.com")!, cachePolicy: .returnCacheDataElseLoad)
     }
     
-    func fetchImage (_ urlString: String) -> Data? {
+    func fetchImage (_ urlString: String, tableCell: FavoriteTableViewCell?, collectionCell: ListCollectionViewCell?) {
         let url = URL(string: urlString)
-        var request = URLRequest(url: url!)
+        request.url = url
         request.httpMethod = "GET"
-        var result: Data?
         print("fetch")
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                print(data)
-                result = data
+                guard let imgData = data else {return}
+                DispatchQueue.main.async {
+                    if let tCell = tableCell {
+                        tCell.setImage(data: imgData)
+                    }
+                    if let cCell = collectionCell {
+                        cCell.setImage(data: imgData)
+                    }
+                }
                 
             }
         }.resume()
-        
-        
-        return result
     }
     
     

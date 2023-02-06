@@ -242,6 +242,7 @@ class DetailViewController: UIViewController {
             label.clipsToBounds = true
             label.text = $0.type
             if let value = $0.type {
+                label.textColor = .white
                 label.backgroundColor = ColorSet.pick(type: value)
             }
             
@@ -269,7 +270,7 @@ class DetailViewController: UIViewController {
     func changeAction() {
         if let like =  data.like, like != detailViewModel.changeLikeStatus(poke: data){
             print(like)
-            imgView = UIImageView(image: UIImage(systemName: !like ? "heart.fill" : "heart",withConfiguration: UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: CGFloat(20.0)))))
+            imgView.image = UIImage(systemName: !like ? "heart.fill" : "heart",withConfiguration: UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: CGFloat(20.0))))
             self.loadViewIfNeeded()
         }
     }

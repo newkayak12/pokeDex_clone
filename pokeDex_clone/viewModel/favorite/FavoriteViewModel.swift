@@ -43,22 +43,22 @@ class FavoriteViewModel: NSObject, UITableViewDelegate, UITableViewDataSource {
         customCell.pokeLabel.text = poke.pokeName
         guard let likeStatus = poke.like else { fatalError()}
         
-        
-        let url = URL(string: poke.imgSrc!)
-        var request = URLRequest(url: url!)
-        request.httpMethod = "GET"
-        request.cachePolicy = .returnCacheDataElseLoad
-        
-        
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                DispatchQueue.main.async { 
-                    if let result = data{
-                        customCell.pokeImg.image = UIImage(data: result)
-                    }
-                }
-            }
-        }.resume()
+        Services.defaults.fetchImage(poke.imgSrc!, tableCell: customCell, collectionCell: nil)
+//        let url = URL(string: poke.imgSrc!)
+//        var request = URLRequest(url: url!)
+//        request.httpMethod = "GET"
+//        request.cachePolicy = .returnCacheDataElseLoad
+//
+//
+//        URLSession.shared.dataTask(with: request) { (data, response, error) in
+//            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+//                DispatchQueue.main.async {
+//                    if let result = data{
+//                        customCell.pokeImg.image = UIImage(data: result)
+//                    }
+//                }
+//            }
+//        }.resume()
         customCell.accessoryView = UIImageView(image: UIImage(systemName: likeStatus ? customCell.like : customCell.unlike))
 //        customCell.accessoryType = .none
         return customCell

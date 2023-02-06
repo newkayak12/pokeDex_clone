@@ -55,5 +55,9 @@ class FavoriteTableViewCell: UITableViewCell {
             make.centerY.equalTo(self)
         }
     }
+    
+    func setImage(data: Data){
+        pokeImg.image = UIImage(data: data)
+    }
 
 }
